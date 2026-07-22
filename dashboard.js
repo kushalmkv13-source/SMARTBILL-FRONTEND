@@ -956,10 +956,8 @@ async function loadDashboardData() {
 
         if (totalInvoicesElement) {
 
-            totalInvoicesElement.innerHTML =
-                Number(
-                    dashboard.total_invoices || 0
-                );
+           totalInvoicesElement.innerHTML =
+    Number(dashboard.total_invoices || 0);
 
         }
 
@@ -969,12 +967,12 @@ async function loadDashboardData() {
         // ==============================
 
         if (
-            dashboard.revenue_chart &&
-            Array.isArray(dashboard.revenue_chart)
+            dashboard.monthly_revenue &&
+            Array.isArray(dashboard.monthly_revenue)
         ) {
 
             const revenueData =
-                dashboard.revenue_chart.map(
+                dashboard.monthly_revenue.map(
                     item => Number(item.amount || 0)
                 );
 
@@ -987,24 +985,13 @@ async function loadDashboardData() {
         // INVOICE STATUS DATA
         // ==============================
 
-        const totalInvoices =
-            Number(
-                dashboard.total_invoices || 0
-            );
+      const totalInvoices =
+    Number(dashboard.total_invoices || 0);
 
-
-        const paid =
-            Number(
-                dashboard.paid_invoices || 0
-            );
-
-
-        const draft =
-            Number(
-                dashboard.draft_invoices || 0
-            );
-
-
+const paid =
+    Number(dashboard.paid_invoices || 0);
+const draft =
+    Number(dashboard.draft_invoices || 0);
         /*
         First preference:
         unpaid_invoices from backend.
@@ -1032,13 +1019,13 @@ async function loadDashboardData() {
         }
 
         else if (
-            dashboard.pending_invoices !== undefined &&
-            dashboard.pending_invoices !== null
+            dashboard.pending !== undefined &&
+            dashboard.pending !== null
         ) {
 
             unpaid =
                 Number(
-                    dashboard.pending_invoices
+                    dashboard.pending
                 );
 
         }

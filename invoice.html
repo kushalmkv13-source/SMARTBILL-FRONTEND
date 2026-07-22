@@ -643,31 +643,22 @@
       }
 
       /* Bill To Section */
-  .inv-section-grid{
-
+ .inv-section-grid{
     display:flex;
-
-    justify-content:space-between;
-
-    gap:15px;
-
-    margin:25px 0;
-
+    gap:20px;
+    align-items:stretch;
+    margin:30px 0;
 }
+
 .inv-section-box{
-
-    width:48%;
-
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:190px;
+    padding:22px;
     border:1px solid #ddd;
-
-    border-left:5px solid #0050cc;
-
-    padding:18px;
-
+    border-left:5px solid #d4af37;
     box-sizing:border-box;
-
-    overflow:hidden;
-
 }
 
       .inv-section-title {
@@ -692,9 +683,17 @@
         font-size: 14px;
       }
 
-      .inv-section-row {
-        margin-bottom: 5px;
-      }
+    .inv-section-row{
+    display:flex;
+    align-items:flex-start;
+    margin-bottom:10px;
+}
+
+.inv-section-row strong{
+    width:90px;
+    flex-shrink:0;
+    color:#666;
+}
 
       .inv-section-label {
         font-weight: 600;
@@ -1498,7 +1497,10 @@ Generating Invoice...
                   <tr>
                     <th width="50">#</th>
                     <th>Product Description</th>
-                    <th width="100">HSN</th>
+                    <th width="100">
+                      
+                  
+                    </th>
                     <th width="80">Qty</th>
                     <th width="80">Unit</th>
                     <th width="120">Price</th>
@@ -2393,21 +2395,20 @@ ${invoiceData.payMethod === "Card"
                     </div>
                 </div>
 
-                <!-- ITEMS TABLE -->
-                <table class="inv-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%;">#</th>
-                            <th style="width: 28%;">Description</th>
-                            <th style="width: 10%;">HSN</th>
-                            <th style="width: 12%;">Qty</th>
-                            
-                            <th style="width: 8%;">Disc</th>
-                            <th style="width: 10%;">GST</th>
-                            <th style="width:14%;">Price</th>
-<th style="width:18%;">Total</th>
-                        </tr>
-                    </thead>
+             <!-- ITEMS TABLE -->
+<table class="inv-table">
+    <thead>
+        <tr>
+            <th style="width:5%;">#</th>
+            <th style="width:28%;">Description</th>
+            <th style="width:10%;">HSN</th>
+            <th style="width:10%;">Qty</th>
+            <th style="width:14%;">Price</th>
+            <th style="width:8%;">Disc</th>
+            <th style="width:10%;">GST</th>
+            <th style="width:15%;">Total</th>
+        </tr>
+    </thead>
                     <tbody>
                         ${rowsHtml}
                     </tbody>
@@ -2517,20 +2518,28 @@ const modal = new bootstrap.Modal(
    try {
 
     await saveInvoiceToDatabase();
-
+window.dispatchEvent(new Event("invoiceCreated"));
     modal.show();
 
     hideLoader();
 
-    Swal.fire({
-        icon: "success",
-        title: "Invoice Generated Successfully",
-        text: "Invoice has been saved successfully.",
-        timer: 2000,
-        showConfirmButton: false
-    }).then(() => {
-        prepareNextInvoice();
-    });
+   Swal.fire({
+    icon: "success",
+    title: "Invoice Generated Successfully",
+    text: "Invoice has been saved successfully.",
+    timer: 2000,
+    showConfirmButton: false
+}).then(() => {
+
+    // Tell dashboard/history to refresh
+    localStorage.setItem("refreshDashboard", "true");
+
+    // Prepare next invoice
+    prepareNextInvoice();
+
+    // Optional: go back to dashboard automatically
+    // window.location.href = "dashboard.html";
+});
 
 } catch(error) {
 
